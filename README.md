@@ -16,6 +16,10 @@ We will first describe the task and how the text-to-speech pipeline works, and t
 
 The task is to clone the voices of a popular person (such as Barack Obama) given an audio recording of the person. It is preferable that the voice not only be recognizable for a given person, but also have tonal depth and non verbal sounds such as laughing and screaming.
 
+# Ethics DIsclaimer
+
+Of course, voice cloning technology can be used for malicious purposes, such as misinformation. I don't claim any responsibility over any individual who chooses to use this for illegal or morally dubious purposes. The world is already chaotic enough as is; let's not make it worse.
+
 # Dataset
 
 We will be using audio recordings of various famous individuals [1]. These recordings contain little to no background noise and others speaking, ensuring our ground truth for training is high quality.
