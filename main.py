@@ -3,8 +3,6 @@ import torch
 from backend import *
 from voice_management import *
 
-#voice_manager: VoiceManager = VoiceManager()
-
 if __name__ == "__main__":
 
     voice_column, text_column, audio_file_column = st.columns(3) 
@@ -12,22 +10,27 @@ if __name__ == "__main__":
     add_state_to_session({
         "test" : [],
         "audio_array" : torch.tensor(),
+        "voice_manager" : VoiceManager(),
     })
-    
-    voice_name: str = st.text_input("Voice Name: ")
 
-    def test_callback():
+    with voice_column:
 
-        st.session_state["test"].append(voice_name)
+        for thing in st.session_state["test"]:
 
-    for thing in st.session_state["test"]:
+            st.write(thing)
 
-        st.write(thing)
+        st.session_state["voice_manager"].render_voices()
 
-    st.button("Add Voice", on_click=test_callback)
+    with text_column:
+
+        voice_name: str = st.text_input("Voice Name: ")
 
     with audio_file_column:
 
-        st.audio()
+        st.audio(st.session_state["audio_array"])
 
-    st.write("End of list")
+        def test_callback():
+
+            st.session_state["test"].append(voice_name)
+
+        st.button("Add Voice", on_click=test_callback)
