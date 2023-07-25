@@ -1,11 +1,7 @@
 import streamlit as st
-from voice_management import VoiceManager
 from typing import Union
-import torch
 
-#voice_manager: VoiceManager = VoiceManager()
-
-def add_state_to_session(state: Union[str, dict], state_value=None) -> None:
+def add_state_to_session(state: Union[str, dict], state_value = None) -> None:
 
     """
     Adds some data to the current session state if it is not already present.
@@ -31,27 +27,47 @@ def add_state_to_session(state: Union[str, dict], state_value=None) -> None:
         - if `state` is a dictionary and any of the keys in `state` are not strings
     """
 
-    if type(state) == dict:
+    if isinstance(state, dict):
 
         if state_value is not None:
 
-            raise ValueError("value must not be given when the given state is a dictionary")
+            raise ValueError("expected state_value to be None when state is a dictionary, got" + str(state_value))
 
-        for state_element, state_element_value in state.items():
+        add_multi_state_to_session(state)
 
-            if type(state_element) != str:
+    elif isinstance(state, str):
 
-                raise ValueError("All keys in state dictionary must be strings")
+        add_single_state_to_session(state, state_value)
 
-            if state_element not in st.session_state:
+    else:
 
-                st.session_state[state_element] = state_element_value
+        raise ValueError("Passed in state key must be a string or dict, is of type " + str(type(state)) + " with value " + str(state))
+    
+def add_single_state_to_session(state: str, state_value) -> None:
 
-    elif type(state) == str:
+    """
+    Adds a single state value to the session state.
+
+    Args:
+
+        `str state`: the state to add.
+
+        `Any state_value`: the value to give the state.
+
+    Raises:
+
+        `ValueError` in the following cases:
+
+        - `state` is not a string
+
+        - `state_value` is None
+    """
+
+    if isinstance(state, str):
 
         if state_value is None:
 
-            raise ValueError("value must be given when the given state is a string key")
+            raise ValueError("state value must be given when the given state is a string key")
 
         if state not in st.session_state:
 
@@ -59,31 +75,30 @@ def add_state_to_session(state: Union[str, dict], state_value=None) -> None:
 
     else:
 
-        raise ValueError("Passed in state must be a string or dict")
-
-if __name__ == "__main__":
-
-    voice_column, text_column, audio_file_column = st.columns(3) 
-
-    add_state_to_session({
-        "test" : [],
-        "audio_array" : torch.tensor(),
-    })
+        raise ValueError("Passed in state key must be a string, is of type " + str(type(state)) + " with value " + str(state))
     
-    voice_name: str = st.text_input("Voice Name: ")
+def add_multi_state_to_session(state: dict) -> None:
 
-    def test_callback():
+    """
+    Adds multiple state values to the session state.
 
-        st.session_state["test"].append(voice_name)
+    Args:
 
-    for thing in st.session_state["test"]:
+        `dict state`: the state to add. Keys must all be strings.
 
-        st.write(thing)
+    Raises:
 
-    st.button("Add Voice", on_click=test_callback)
+        `ValueError` in the following cases:
 
-    with audio_file_column:
+        - any of `state`'s keys are not strings
+    """
 
-        st.audio()
+    for state_element, state_element_value in state.items():
 
-    st.write("End of list")
+        if type(state_element) != str:
+
+            raise ValueError("All keys in state dictionary must be strings, found one of type " + str(type(state_element)) + " with value " + str(state_element))
+
+        if state_element not in st.session_state:
+
+            st.session_state[state_element] = state_element_value

@@ -97,7 +97,7 @@ class VoiceManager:
 
         self.voices = {}
 
-        self.text_to_speech = TextToSpeech()
+        self.text_to_speech = TextToSpeech(half=True, use_deepspeed=True, device=torch.device("cuda:0"))
 
         self.voice_name_set = sortedcontainers.SortedSet()
 
