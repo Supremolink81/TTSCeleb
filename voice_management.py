@@ -1,14 +1,23 @@
 from tortoise_tts.tortoise.api import TextToSpeech
 import torch
 from torchaudio.backend.sox_io_backend import load
+from scipy.io.wavfile import write as save_audio
 from torchaudio.transforms import Resample
+from streamlit import _DeltaGenerator
 
-class VoiceDatabase:
+class VoiceManager:
 
     """
     A class to wrap the voices stored in the current session. It contains
     convenient methods for adding voices, removing voices, and generating text
     to speech from a voice.
+
+    Fields:
+
+        dict[str, tuple[torch.Tensor, torch.Tensor]] voices: the dictionary to map
+        voice names to their latent vectors, which are necessary for voice cloning.
+
+        TextToSpeech text_to_speech: the Tortoise class used for text-to-speech.
     """
 
     voices: dict[str, tuple[torch.Tensor, torch.Tensor]]
@@ -67,3 +76,44 @@ class VoiceDatabase:
         if voice_name in self.voices:
 
             del self.voices[voice_name]
+
+    def text_to_speech(self, voice_name: str, text: str, audio_file_path: str):
+
+        """
+        Converts a given text into speech in the given voice and saves it as a waveform file.
+
+        Args:
+
+            str voice_name: the voice to use.
+
+            str text: the text to convert to speech.
+
+            str audio_file_path: the path to save the audio to. 
+        """
+
+        try:
+
+            voice_latent_vectors: tuple[torch.Tensor, torch.Tensor] = self.voices[voice_name]
+
+            audio_tensor: torch.Tensor = self.text_to_speech.tts(text, conditioning_latents=voice_latent_vectors)
+
+            # sample rate of generated speech is 24 kHz in tortoise backend
+            save_audio(audio_file_path, 24000, audio_tensor)
+
+        except KeyError:
+
+            raise KeyError("Voice not found: " + voice_name)
+        
+    def render_voices(self, column: _DeltaGenerator):
+
+        """
+        Function to render list of voices in a Streamlit application.
+
+        Args:
+
+            ```py
+            _DeltaGenerator column
+            ```
+
+            The column to render the voices to.
+        """
