@@ -27,9 +27,9 @@ if __name__ == "__main__":
 
         selector: list = st.multiselect("Select Your Voice:", st.session_state["test"], max_selections=1)
 
-        selected_option: str = get_selected_value(selector)
+        selected_voice: str = get_selected_value(selector)
 
-        print(selected_option)
+        print(selected_voice)
 
     with add_voice_column:
 
@@ -71,7 +71,11 @@ if __name__ == "__main__":
             """
         )
 
-        preset: str = st.text_input("Preset: ")
+        preset_options: list[str] = ["ultra_fast", "fast", "standard", "high_quality"]
+
+        preset_selector: list[str] = st.multiselect("", preset_options, max_selections=1)
+
+        selected_preset: str = get_selected_value(preset_selector)
 
     with audio_file_column:
 
@@ -79,4 +83,4 @@ if __name__ == "__main__":
 
         st.audio(st.session_state["audio_array"].numpy(), sample_rate=22050)
 
-        st.button("Generate Audio")
+        st.button("**Generate Audio**", disabled = (selected_preset == "" or selected_voice == ""))
