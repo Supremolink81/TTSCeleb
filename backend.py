@@ -102,3 +102,19 @@ def add_multi_state_to_session(state: dict) -> None:
         if state_element not in st.session_state:
 
             st.session_state[state_element] = state_element_value
+
+def get_selected_value(selector: list) -> str:
+
+    """
+    Obtains the value selected in a selector object.
+
+    Args:
+
+        `list selector`: the selector to get the selected item from.
+
+    Returns:
+
+        the selected item.
+    """
+
+    return selector[0] if len(selector) == 1 else ""
