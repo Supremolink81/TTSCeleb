@@ -118,3 +118,30 @@ def get_selected_value(selector: list) -> str:
     """
 
     return selector[0] if len(selector) == 1 else ""
+
+def single_selector_page(title: str, description: str, selector_list: list[str]) -> str:
+
+    """
+    Given a set of options, creates a selector for a user interface
+    and continuously returns the currently selected value.
+
+    Args:
+
+        `str title`: the title to give the selector page.
+
+        `str description`: the description to give the selector.
+
+        `list[str] selector_list`: the list of options for the selector.
+
+    Returns:
+
+        the currently selected value.
+    """
+
+    st.subheader(title)
+
+    st.write(description)
+
+    selector: list[str] = st.multiselect("", selector_list, max_selections=1)
+
+    return get_selected_value(selector)

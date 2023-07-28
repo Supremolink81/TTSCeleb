@@ -19,17 +19,17 @@ if __name__ == "__main__":
 
     with voice_column:
 
-        st.subheader("Voice List: ", )
+        st.subheader("Voice List: ")
 
         for thing in st.session_state["test"]:
 
             st.write(thing)
 
-        selector: list = st.multiselect("Select Your Voice:", st.session_state["test"], max_selections=1)
-
-        selected_voice: str = get_selected_value(selector)
-
-        print(selected_voice)
+        selected_voice: str = single_selector_page(
+            title="Select Your Voice:",
+            description="",
+            selector_list=st.session_state["test"],
+        )
 
     with add_voice_column:
 
@@ -45,6 +45,8 @@ if __name__ == "__main__":
 
             st.session_state["test"] = [voice_name] + st.session_state["test"]
 
+            st.session_state["test"].sort()
+
         st.button("Add", on_click=test_callback)
 
     with text_column:
@@ -55,10 +57,9 @@ if __name__ == "__main__":
 
     with preset_column:
 
-        st.subheader("Enter a preset for TTS generation.")
-
-        st.write(
-            """
+        selected_preset: str = single_selector_page(
+            title="Enter a preset for TTS generation.",
+            description="""
             The options are:
 
             'ultra_fast': Low quality speech at a fast inference rate.
@@ -68,14 +69,9 @@ if __name__ == "__main__":
             'standard': Very good quality, somewhat slow inference. This is generally about as good as you are going to get.
 
             'high_quality': Use if you want the absolute best (WARNING: EXTREMELY SLOW).
-            """
+            """,
+            selector_list=["ultra_fast", "fast", "standard", "high_quality"]
         )
-
-        preset_options: list[str] = ["ultra_fast", "fast", "standard", "high_quality"]
-
-        preset_selector: list[str] = st.multiselect("", preset_options, max_selections=1)
-
-        selected_preset: str = get_selected_value(preset_selector)
 
     with audio_file_column:
 
