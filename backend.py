@@ -145,3 +145,41 @@ def single_selector_page(title: str, description: str, selector_list: list[str])
     selector: list[str] = st.multiselect("", selector_list, max_selections=1)
 
     return get_selected_value(selector)
+
+def is_audio_file(filename: str) -> bool:
+
+    """
+    Returns True if the file has a .wav or .mp3 extension and False otherwise.
+
+    Args:
+
+        `str filename`: the filename to check.
+
+    Returns:
+
+        whether the filename corresponds to an audio file.
+    """
+
+    return filename.endswith(".wav") or filename.endswith(".mp3")
+
+def is_image_file(filename: str) -> bool:
+
+    """
+    Returns True if the file has an image extension and False otherwise.
+
+    Valid extensions include:
+
+    - .png
+    - .jpg
+    - .jpeg
+
+    Args:
+
+        `str filename`: the filename to check.
+
+    Returns:
+
+        whether the filename corresponds to an image file.
+    """
+
+    return filename.endswith(".png") or filename.endswith(".jpg") or filename.endswith(".jpeg")

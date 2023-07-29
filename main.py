@@ -1,7 +1,8 @@
 import streamlit as st
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 import torch
 from backend import *
-#from voice_management import *
+from voice_management import *
 
 if __name__ == "__main__":
 
@@ -14,7 +15,7 @@ if __name__ == "__main__":
     add_state_to_session({
         "test" : [],
         "audio_array" : torch.tensor([]),
-        #"voice_manager" : VoiceManager(),
+        "voice_manager" : VoiceManager(),
     })
 
     with voice_column:
@@ -31,6 +32,8 @@ if __name__ == "__main__":
             selector_list=st.session_state["test"],
         )
 
+        st.button("Delete Voice", disabled=bool(selected_voice))
+
     with add_voice_column:
 
         st.subheader("Add Voice To Voice Database")
@@ -39,7 +42,9 @@ if __name__ == "__main__":
 
         voice_name: str = st.text_input("Voice Name: ")
 
-        st.file_uploader("Upload Reference Audio:")
+        audio_file: Union[None, UploadedFile] = st.file_uploader("Upload Reference Audio:", accept_multiple_files=False, type=["wav", "mp3"])
+
+        image_file: Union[None, UploadedFile] = st.file_uploader("Upload Profile Picture (Optional): ", accept_multiple_files=False, type=["png", "jpg"])
 
         def test_callback():
 
@@ -47,7 +52,7 @@ if __name__ == "__main__":
 
             st.session_state["test"].sort()
 
-        st.button("Add", on_click=test_callback)
+        st.button("Add", on_click=test_callback, disabled=audio_file is not None)
 
     with text_column:
 
@@ -79,4 +84,8 @@ if __name__ == "__main__":
 
         st.audio(st.session_state["audio_array"].numpy(), sample_rate=22050)
 
-        st.button("**Generate Audio**", disabled = (selected_preset == "" or selected_voice == ""))
+        def generate_audio_callback():
+
+            st.session_state["audio_array"] = st.session_state["voice_manager"].text_to_speech(selected_voice, input_text, selected_preset)
+
+        st.button("**Generate Audio**", disabled = bool(selected_preset) or bool(selected_voice), on_click=generate_audio_callback)
