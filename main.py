@@ -22,9 +22,7 @@ if __name__ == "__main__":
 
         st.subheader("Voice List: ")
 
-        for thing in st.session_state["test"]:
-
-            st.write(thing)
+        st.session_state["voice_manager"].render_voices()
 
         selected_voice: str = single_selector_page(
             title="Select Your Voice:",
@@ -47,6 +45,14 @@ if __name__ == "__main__":
         image_file: Union[None, UploadedFile] = st.file_uploader("Upload Profile Picture (Optional): ", accept_multiple_files=False, type=["png", "jpg"])
 
         def test_callback():
+
+            if image_file is not None:
+
+                st.session_state["voice_manager"].add_voice(voice_name, audio_file, image_file)
+
+            else:
+
+                st.session_state["voice_manager"].add_voice(voice_name, audio_file)
 
             st.session_state["test"] = [voice_name] + st.session_state["test"]
 
