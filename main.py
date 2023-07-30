@@ -10,6 +10,8 @@ if __name__ == "__main__":
 
     st.title("TTSCeleb: voice clone your favority celebrity, politician or even yourself!")
 
+    st.subheader("(Though, depending on how much you want to clone and the quality you want, it could take a while.)")
+
     voice_column, add_voice_column, text_column, preset_column, audio_file_column = st.columns([1, 2, 2, 3, 1], gap="medium") 
 
     add_state_to_session({
