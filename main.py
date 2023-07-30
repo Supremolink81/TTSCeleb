@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     with add_voice_column:
 
-        st.subheader("Add Voice To Voice Database")
+        st.subheader("Add A Voice To The Voice Database")
 
         st.write("It's recommended to have at least 10 seconds of reference audio.")
 
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
             st.session_state["test"].sort()
 
-        st.button("Add", on_click=test_callback, disabled=audio_file is not None)
+        st.button("Add Voice", on_click=test_callback, disabled=audio_file is None)
 
     with text_column:
 
