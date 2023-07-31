@@ -1,5 +1,7 @@
 # TTSCeleb
 
+![TTSCeleb Page](./TTSCelebApp.png)
+
 This is a text-to-speech project where I create a simple web app to allow people to clone the voices of various popular figures, including (but not limited to):
 
 - Barack Obama
