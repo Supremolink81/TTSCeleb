@@ -9,7 +9,7 @@ def add_state_to_session(state: Union[str, dict], state_value = None) -> None:
     Args:
 
         `Union[str, dict] state`: the state to add. If it is a string, it is interpreted as
-        a key and is assigned state_value's value. If it is a dictionary, all key value pairs 
+        a key and is assigned state_value's value. If it is a dictionary, all key value pairs
         are inserted as state into the session.
 
         `Any state_value`: the state value to assign to the key, if the state parameter is a string.
@@ -42,7 +42,7 @@ def add_state_to_session(state: Union[str, dict], state_value = None) -> None:
     else:
 
         raise ValueError("Passed in state key must be a string or dict, is of type " + str(type(state)) + " with value " + str(state))
-    
+
 def add_single_state_to_session(state: str, state_value) -> None:
 
     """
@@ -76,7 +76,7 @@ def add_single_state_to_session(state: str, state_value) -> None:
     else:
 
         raise ValueError("Passed in state key must be a string, is of type " + str(type(state)) + " with value " + str(state))
-    
+
 def add_multi_state_to_session(state: dict) -> None:
 
     """

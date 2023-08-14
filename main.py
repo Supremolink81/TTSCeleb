@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     st.subheader("(Though, depending on how much you want to clone and the quality you want, it could take a while.)")
 
-    voice_column, add_voice_column, text_column, preset_column, audio_file_column = st.columns([1, 2, 2, 3, 1], gap="medium") 
+    voice_column, add_voice_column, text_column, preset_column, audio_file_column = st.columns([1, 2, 2, 3, 1], gap="medium")
 
     add_state_to_session({
         "test" : [],
@@ -32,7 +32,7 @@ if __name__ == "__main__":
             selector_list=st.session_state["test"],
         )
 
-        st.button("Delete Voice", disabled=bool(selected_voice))
+        st.button("Delete Voice", disabled = not bool(selected_voice))
 
     with add_voice_column:
 
@@ -96,4 +96,4 @@ if __name__ == "__main__":
 
             st.session_state["audio_array"] = st.session_state["voice_manager"].text_to_speech(selected_voice, input_text, selected_preset)
 
-        st.button("**Generate Audio**", disabled = bool(selected_preset) or bool(selected_voice), on_click=generate_audio_callback)
+        st.button("**Generate Audio**", disabled = not bool(selected_preset) or not bool(selected_voice) or not bool(input_text), on_click=generate_audio_callback)
