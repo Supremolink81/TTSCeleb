@@ -34,7 +34,7 @@ I started at the Bark text to audio generative model in the hopes of learning ho
 
 Here is a sample recording produced by GitMylo's method which is meant to clone Joe Biden:
 
-![Biden Recording](./biden_mylo_clone.mov)
+![Biden Recording](./biden_mylo_clone.mp4)
 
 While it isn't terrible, I wouldn't say it would be recognizable as Joe Biden.
 
